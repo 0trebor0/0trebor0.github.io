@@ -20,114 +20,102 @@ limitations under the License.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" type="image/png" href="https://avatars1.githubusercontent.com/u/9081310?s=460&v=4"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css" integrity="sha256-ujE/ZUB6CMZmyJSgQjXGCF4sRRneOimQplBVLu8OU5w=" crossorigin="anonymous" />
         <style>
             @import url('https://fonts.googleapis.com/css?family=Slabo+27px|Staatliches');
-            body{
-                margin: 0px;
-                background-color: lightblue;
-            }
-            .title{
-                font-family: 'Staatliches', cursive;
-            }
-            .centeredText{
-                text-align: center;
-            }
-            p{
-                font-family: 'Slabo 27px', serif;
-                font-size: 150%;
-            }
-            a{
-                text-decoration: none;
-            }
-            .header{
-                padding: 1%;
-                margin-left: 20%;
-                margin-right: 20%;
-                margin-top: 1%;
-                background-color: white;
-                box-shadow: 0px 0px 3px 1px grey;
-            }
-            .header .header-head{
-                padding: 1%;
-                margin: 0%;
-            }
-            .header .header-head img{
-                width: 20%;
-                box-shadow: 0px 0px 0px 1px grey;
-            }
-            .header .header-body{
-                padding: 1%;
-                margin: 0%;
-            }
-            .section{
-                padding: 1%;
-                margin: 0%;
-            }
-            .section .section-body .list-item{
-                display: inline-block;
-                padding: 1%;
-                margin: 1%;
-                background-color: #EBEBEB;
-                min-width: 50%;
-                box-shadow: 0px 0px 0px 1px grey;
-            }
         </style>
     </head>
     <body>
-        <div class="header centeredText">
-            <div class="header-head">
-                <h1 class="title">0trebor0 Projects</h1>
-                <img src="https://avatars1.githubusercontent.com/u/9081310?s=460&v=4">
-            </div>
-            <div class="header-body">
-                <p>Some Information about my projects and myself.</p>
-            </div>
-        </div>
-        <div class="section centeredText">
-            <div class="section-head">
-                <h1 class="title">Projects</h1>
-            </div>
-            <div class="section-body">
-                <div class="list-item">
-                    <p><a href="https://github.com/0trebor0/Simple-HTTP-Server">Simple HTTP Server</a><br>created because i enjoy using http module to make differents projects<br>It works but as i'm new to development, there might be some issues.</p>
-                </div>
-                <div class="list-item">
-                    <p><a href="https://github.com/0trebor0/cryptoCommandLine">cryptoCommandLine</a><br>created to encrypt files using command</p>
-                </div>
-                <div class="list-item">
-                    <p><a href="https://github.com/0trebor0/http-file-encrypt-and-decrypt">HTTP file encrypt and decrypt</a><br>this tool will help you to encrypt your files by uploading them to a server, then you will be able to download the file encrypted</p>
-                </div>
-                <div class="list-item">
-                    <p><a href="https://github.com/0trebor0/php-register-and-login-example">php-register-and-login-example</a><br>Simple php script to allow you to login to your account with session saved on the database</p>
-                </div>
-            </div>
-        </div>
-        <div class="section centeredText" style="background-color: lightcoral;">
-            <div class="section-head">
-                <h1 class="title">Whos is 0trebor0?</h1>
-            </div>
-            <div class="section-body">
-                <div class="list-item">
-                    <p>I have coded on php for 3 years, I'm always learning and trying to improve my skills.</p>
-                </div>
-                <div class="list-item">
-                    <p>I started learning nodejs one year ago after using javascript on web browsers,<br>I found it interesting and easy to learn as there is loads of tutorials online. i still get things wrong but thats alright because the errors helps you to improve.</p>
-                </div>
-                <div class="list-item">
-                    <p>I'm still learning so when you look at my code and think that I'm bad, please remember that there are always space for improvement.</p>
-                </div>
-            </div>
-        </div>
-        <div class="section centeredText" style="background-color: lightsalmon;">
-            <div class="section-head">
-                <h1 class="title">Contact</h1>
-            </div>
-            <div class="section-body">
-                <div class="list-item">
-                    <p><a href="https://facebook.com/0trebor0">facebook</a></p>
-                    <p><a href="https://discord.gg/RXxGMha">discord</a></p>
-                </div>
-            </div>
-        </div>
+		<script>
+			var navItems = [{"text":"Projects","href":"#projects"},{"text":"More-Info","href":"#more-info"}];
+			document.body.onload = ()=>{
+				console.log( "Welcome User" );
+				navItems.forEach( ( item )=>{
+					//console.log( item.href.slice(1) );
+					document.getElementById('tabsNavItems').innerHTML += "<li><a href='"+item.href+"' onclick='navItem(this.innerText.toLowerCase())'>"+item.text+"</a></li>";
+				} );
+				if( location.hash.slice(1) ){
+					navItem( location.hash.slice(1) );
+				}
+			}
+			function navItem( id ){
+				navItems.forEach( ( item )=>{
+					if( document.getElementById( item.text.toLowerCase() ) ){
+						document.getElementById( item.text.toLowerCase() ).style.display = 'none'
+					}
+				});
+				if( document.getElementById( id ) ){
+					if( document.getElementById( id ).style.display == 'none' ){
+						document.getElementById( id ).style.display = "";
+						document.getElementById( id ).scrollIntoView();
+					} else {
+						document.getElementById( id ).style.display = "none";
+					}
+				} else {
+					console.log( "not found "+id );
+				}
+			}
+		</script>
+		<section class="hero is-dark">
+			<div class="hero-body">
+				<div class="container has-text-centered">
+					<h1 class="title">0trebor0 Portfolio</h1>
+					<figure class="image container is-128x128">
+						<img class="is-rounded" src="https://avatars1.githubusercontent.com/u/9081310?s=460&v=4">
+					</figure>
+					<h2 class="subtitle">I'm a tech lover, enjoy php, nodejs, css, html and javascript.</br> Currently learning android development.</h2>
+					<p>Contact me on:</p>
+					<p><a href="https://www.facebook.com/0trebor0" target="_blank" style='color:white;'>Facebook</a> | <a href="https://discord.gg/eZQeeVn" target="_blank" style='color:white;'>Discord</a></p>
+				</div>
+			</div>
+			<div class="hero-foot">
+				<nav class="tabs is-boxed is-fullwidth">
+					<div class="container">
+						<ul id="tabsNavItems"></ul>
+					</div>
+				</nav>
+			</div>
+		</section>
+		<section class="hero" id="projects" style="display:none;">
+			<div class="hero-body">
+				<div class="container has-text-centered">
+					<p class="title">My Projects</p>
+					<div class="content box">
+						<h1>php-register-and-login-example</h1>
+						<p>Simple php script to allow you to login to your account with session saved on the database</p>
+						<a class="button" href="https://github.com/0trebor0/php-register-and-login-example">GitHub</a>
+					</div>
+					<div class="content box">
+						<h1>Simple-HTTP-Server</h1>
+						<p>This is an easy to use tool that makes it easy to manage a http server</br>Currently in development.</p>
+						<a class="button" href="https://github.com/0trebor0/Simple-HTTP-Server">GitHub</a>
+					</div>
+					<div class="content box">
+						<h1>cryptoCommandLine</h1>
+						<p>Just a crypto command line to encrypt and decrypt file</p>
+						<a class="button" href="https://github.com/0trebor0/cryptoCommandLine">GitHub</a>
+					</div>
+					<div class="content box">
+						<h1>http file encrypt and decrypt</h1>
+						<p>Simple http server that allows you to upload a file and encrypt it with a passwod that you choose</p>
+						<a class="button" href="https://github.com/0trebor0/http-file-encrypt-and-decrypt">GitHub</a>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="hero" id="more-info" style="display:none;">
+				<div class="hero-body">
+					<div class="container has-text-centered">
+						<p class="title">Whos is 0trebor0?</p>
+						<p>I have coded on php for 3 years, I'm always learning and improving my skills.</p>
+						<p>I started learning nodejs one year ago after using javascript on web browsers, I found it interesting and easy to learn as there is loads of tutorials online. i still get things wrong but thats alright because the errors helps you to improve.</p>
+					</div>
+				</div>
+			</section>
+		<footer class="footer">
+			<div class="content has-text-centered">
+				<p>Theme <a href='https://bulma.io'>Bulma.io</a></p>
+			</div>
+		</footer>
     </body>
 </html>
