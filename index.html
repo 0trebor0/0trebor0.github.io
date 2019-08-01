@@ -57,6 +57,14 @@ limitations under the License.
 					console.log( "not found "+id );
 				}
 			}
+			function getDateTime( value ){
+				d = new Date( value );
+				month = d.getMonth()+1;
+				day = d.getDate();
+				year = d.getFullYear();
+				//console.log( day+'/'+month+'/'+year );
+				return day+'/'+month+'/'+year; 
+			}
 			async function getRepos(){
 				var data = await fetch( github+"/users/0trebor0/repos" );
 				data = await data.json();
@@ -64,11 +72,13 @@ limitations under the License.
 					if( project.name.search('github.io') == -1 ){
 						if( project.fork !== true ){
 							description = "";
+							created = getDateTime( project.created_at );
+							updated = getDateTime( project.updated_at );
 							if( project.description !== null ){
 								description = project.description;
 							}
-							console.log( project.name );
-							document.getElementById('projectsList').innerHTML += "<div class='content box'><h1>"+project.name+"</h1><p>Language: "+project.language+"</p><p>"+description+"</p><a class='button' href='"+project.html_url+"'>GitHub</a></div>";
+							console.log( project.name+" created:"+created+" updated:"+updated  );
+							document.getElementById('projectsList').innerHTML += "<div class='content box'><h1>"+project.name+"</h1><p>Language: "+project.language+" - Created: "+created+" - Last Updated: "+updated+"</p><p>"+description+"</p><a class='button' href='"+project.html_url+"'>GitHub</a></div>";
 						}
 					}
 				} );
