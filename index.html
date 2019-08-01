@@ -27,6 +27,7 @@ limitations under the License.
     </head>
     <body>
 		<script>
+			var github = "https://api.github.com";
 			var navItems = [{"text":"Projects","href":"#projects"},{"text":"More-Info","href":"#more-info"}];
 			document.body.onload = ()=>{
 				console.log( "Welcome User" );
@@ -37,6 +38,7 @@ limitations under the License.
 				if( location.hash.slice(1) ){
 					navItem( location.hash.slice(1) );
 				}
+				getRepos();
 			}
 			function navItem( id ){
 				navItems.forEach( ( item )=>{
@@ -54,6 +56,23 @@ limitations under the License.
 				} else {
 					console.log( "not found "+id );
 				}
+			}
+			async function getRepos(){
+				var data = await fetch( github+"/users/0trebor0/repos" );
+				data = await data.json();
+				data.forEach( ( project )=>{
+					//console.log( project.name.search('github.io') );
+					if( project.name.search('github.io') == -1 ){
+						if( project.fork !== true ){
+							description = "";
+							if( project.description !== null ){
+								description = project.description;
+							}
+							console.log( project.name );
+							document.getElementById('projectsList').innerHTML += "<div class='content box'><h1>"+project.name+"</h1><p>Language: "+project.language+"</p><p>"+description+"</p><a class='button' href='"+project.html_url+"'>GitHub</a></div>";
+						}
+					}
+				} );
 			}
 		</script>
 		<section class="hero is-dark">
@@ -78,9 +97,9 @@ limitations under the License.
 		</section>
 		<section class="hero" id="projects" style="display:none;">
 			<div class="hero-body">
-				<div class="container has-text-centered">
+				<div class="container has-text-centered"id="projectsList">
 					<p class="title">My Projects</p>
-					<div class="content box">
+					<!--<div class="content box">
 						<h1>php-register-and-login-example</h1>
 						<p>Simple php script to allow you to login to your account with session saved on the database</p>
 						<a class="button" href="https://github.com/0trebor0/php-register-and-login-example">GitHub</a>
@@ -99,7 +118,7 @@ limitations under the License.
 						<h1>http file encrypt and decrypt</h1>
 						<p>Simple http server that allows you to upload a file and encrypt it with a passwod that you choose</p>
 						<a class="button" href="https://github.com/0trebor0/http-file-encrypt-and-decrypt">GitHub</a>
-					</div>
+					</div>-->
 				</div>
 			</div>
 		</section>
