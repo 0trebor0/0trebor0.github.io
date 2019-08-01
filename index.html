@@ -77,7 +77,7 @@ limitations under the License.
 							if( project.description !== null ){
 								description = project.description;
 							}
-							console.log( project.name+" created:"+created+" updated:"+updated  );
+							//console.log( project.name+" created:"+created+" updated:"+updated  );
 							document.getElementById('projectsList').innerHTML += "<div class='content box'><h1>"+project.name+"</h1><p>Language: "+project.language+" - Created: "+created+" - Last Updated: "+updated+"</p><p>"+description+"</p><a class='button' href='"+project.html_url+"'>GitHub</a></div>";
 						}
 					}
