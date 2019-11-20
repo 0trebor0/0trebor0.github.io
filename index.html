@@ -19,8 +19,8 @@ limitations under the License.
         <title>0trebor0 Projects</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="shortcut icon" type="image/png" href="https://avatars1.githubusercontent.com/u/9081310?s=460&v=4"/>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css" integrity="sha256-ujE/ZUB6CMZmyJSgQjXGCF4sRRneOimQplBVLu8OU5w=" crossorigin="anonymous" />
+		<link rel="shortcut icon" type="image/png" href="https://avatars1.githubusercontent.com/u/9081310?s=460&v=4"/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.css">
         <style>
             @import url('https://fonts.googleapis.com/css?family=Slabo+27px|Staatliches');
         </style>
@@ -78,7 +78,7 @@ limitations under the License.
 								description = project.description;
 							}
 							//console.log( project.name+" created:"+created+" updated:"+updated  );
-							document.getElementById('projectsList').innerHTML += "<div class='content box'><h1>"+project.name+"</h1><p>Language: "+project.language+" - Created: "+created+" - Last Updated: "+updated+"</p><p>"+description+"</p><a class='button' href='"+project.html_url+"'>GitHub</a></div>";
+							document.getElementById('projectsList').innerHTML += "<div class='box'><h1>"+project.name+"</h1><p>Language: "+project.language+" - Created: "+created+" - Last Updated: "+updated+"</p><p>"+description+"</p><a class='button' href='"+project.html_url+"'>GitHub</a></div>";
 						}
 					}
 				} );
@@ -104,7 +104,7 @@ limitations under the License.
 				</nav>
 			</div>
 		</section>
-		<section class="hero" id="projects" style="display:none;">
+		<section class="hero" id="projects">
 			<div class="hero-body">
 				<div class="container has-text-centered"id="projectsList">
 					<p class="title">My Projects</p>
