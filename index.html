@@ -78,7 +78,7 @@ limitations under the License.
 								description = project.description;
 							}
 							//console.log( project.name+" created:"+created+" updated:"+updated  );
-							document.getElementById('projectsList').innerHTML += "<div class='box'><h1>"+project.name+"</h1><p>Language: "+project.language+" - Created: "+created+" - Last Updated: "+updated+"</p><p>"+description+"</p><a class='button' href='"+project.html_url+"'>GitHub</a></div>";
+							document.getElementById('projectsList').innerHTML += "<div class='box'><h1><u>"+project.name+"</u></h1><p>Language: "+project.language+" - Created: "+created+" - Last Updated: "+updated+"</p><p>"+description+"</p><a class='button' href='"+project.html_url+"'>GitHub</a></div>";
 						}
 					}
 				} );
