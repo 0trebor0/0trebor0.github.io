@@ -6,10 +6,12 @@ element = ( id = null, from = null )=>{
     }else if( id !== null || from !== null ){
         e.dom = from.querySelector( id );
     }
-    e.html = e.dom.innerHTML;
-    e.style = e.dom.style;
-    e.element = ( id )=>{
-        return element( id, e.html );
-    };
+    if( e.dom !== null ){
+        e.html = e.dom.innerHTML;
+        e.style = e.dom.style;
+        e.element = ( id )=>{
+            return element( id, e.html );
+        };
+    }
     return e;
 }
