@@ -6,7 +6,9 @@ element = ( id = null, from = null )=>{
     }else if( id !== null || from !== null ){
         e.dom = from.querySelector( id );
     }
-    if( e.dom !== null ){
+    if( e.dom == null ){
+        e = null;
+    } else {
         e.html = e.dom.innerHTML;
         e.style = e.dom.style;
         e.element = ( id )=>{
