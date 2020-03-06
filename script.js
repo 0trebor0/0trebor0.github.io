@@ -1,18 +1,14 @@
 
 element = ( id = null, from = null )=>{
-    var e = {};
+    var e = null;
     if( id !== null ){
-        e.dom = document.querySelector( id );
+        e = document.querySelector( id );
     }else if( id !== null || from !== null ){
-        e.dom = from.querySelector( id );
+        e = from.querySelector( id );
     }
-    if( e.dom == null ){
-        e = null;
-    } else {
-        e.html = e.dom.innerHTML;
-        e.style = e.dom.style;
-        e.element = ( id )=>{
-            return element( id, e.html );
+    if( e !== null ){
+        e.child = ( id )=>{
+            return element( id, e.innerHTML );
         };
     }
     return e;
