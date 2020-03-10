@@ -1,7 +1,11 @@
 element = ( id = null )=>{
     var e = null;
     if( id !== null ){
-        e = document.querySelectorAll( id );
+        if( document.querySelectorAll( id ).length > 0 ){
+            e = document.querySelectorAll( id );
+        } else {
+            e = document.querySelector( id );
+        }
     }
     return e;
 }
