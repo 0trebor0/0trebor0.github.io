@@ -1,14 +1,15 @@
 element = ( id = null, from = null )=>{
-    var e = {};
-    if( id !== null ){
-        e.dom = document.querySelector( id );
-    }else if( id !== null || from !== null ){
-        e.dom = from.querySelector( id );
+    var e = null;
+    if( from !== null && id !== null ){
+        e = test.querySelector( id );
+        e.element = ( id )=>{
+            return element( id, e.innerHTML );
+        }
+    }else if( id !== null ){
+        e = document.querySelector( id );
+        e.element = ( id )=>{
+            return element( id, e.innerHTML );
+        }
     }
-    e.html = e.dom.innerHTML;
-    e.style = e.dom.style;
-    e.element = ( id )=>{
-        return element( id, e.html );
-    };
     return e;
 }
