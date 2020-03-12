@@ -8,7 +8,11 @@ window.onload = ()=>{
 element = ( id = null )=>{
     var e = null;
     if( id !== null ){
-        e = document.querySelector( id );
+        if( document.querySelectorAll( id ).length > 1 ){
+            e = document.querySelectorAll( id );
+        } else {
+            e = document.querySelector( id );
+        }
     }
     return e;
 }
