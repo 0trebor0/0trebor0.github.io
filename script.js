@@ -1,34 +1,14 @@
 element = ( id = null, from = null )=>{
-    var e = null;
-    if( from !== null && id !== null ){
-        let test = new DOMParser().parseFromString( from ,'text/html' );
-        if( test.querySelectorAll( id ).length > 1 ){
-            e = test.querySelectorAll( id );
-            e.forEach( ( g )=>{
-                g.element = ( id )=>{
-                    return element( id, g.innerHTML );
-                }
-            } );
-        } else {
-            e = test.querySelector( id );
-            e.element = ( id )=>{
-                return element( id, e.innerHTML );
-            }
-        }
-    }else if( id !== null ){
-        if( document.querySelectorAll( id ).length > 1 ){
-            e = document.querySelectorAll( id );
-            e.forEach( ( g )=>{
-                g.element = ( id )=>{
-                    return element( id, g.innerHTML );
-                }
-            } );
-        } else {
-            e = document.querySelector( id );
-            e.element = ( id )=>{
-                return element( id, e.innerHTML );
-            }
-        }
+    var e = {};
+    if( id !== null ){
+        e.dom = document.querySelector( id );
+    }else if( id !== null || from !== null ){
+        e.dom = from.querySelector( id );
     }
+    e.html = e.dom.innerHTML;
+    e.style = e.dom.style;
+    e.element = ( id )=>{
+        return element( id, e.html );
+    };
     return e;
 }
