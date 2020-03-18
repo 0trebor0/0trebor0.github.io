@@ -1,5 +1,5 @@
 var app = {};
-app.windowResize = [];
+app.windowOnresize = [];
 app.windowOnload = [];
 app.windowOnclose = [];
 window.onload = ()=>{
@@ -8,7 +8,7 @@ window.onload = ()=>{
     } );
 }
 window.onresize = ()=>{
-    app.windowResize.forEach( (d)=>{
+    app.windowOnresize.forEach( (d)=>{
         d();
     } );
 }
