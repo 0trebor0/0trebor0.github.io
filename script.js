@@ -1,10 +1,22 @@
+var app = {};
+app.windowResize = [];
+app.windowOnload = [];
+app.windowOnclose = [];
 window.onload = ()=>{
-    document.querySelectorAll( 'input[type=text], input[type=password]' ).forEach( ( input )=>{
-        if( input !== null ){
-            input.autocomplete = "off";
-        }
+    app.windowOnload.forEach( ( d )=>{
+        d()
     } );
-};
+}
+window.onresize = ()=>{
+    app.windowResize.forEach( (d)=>{
+        d();
+    } );
+}
+window.onbeforeunload = ()=>{
+    app.windowOnclose.forEach( (d)=>{
+        d();
+    } );
+}
 element = ( id = null )=>{
     var e = null;
     if( id !== null ){
