@@ -18,9 +18,9 @@ window.onbeforeunload = ()=>{
     } );
 }
 app.windowOnload[0] = ()=>{
-    console.log("app.windowOnresize.push("FUNCTION")");
-    console.log("app.windowOnload.push("FUNCTION")");
-    console.log("app.windowOnclose.push("FUNCTION")");
+    console.log("app.windowOnresize.push(FUNCTION)");
+    console.log("app.windowOnload.push(FUNCTION)");
+    console.log("app.windowOnclose.push(FUNCTION)");
     document.querySelectorAll( 'input[type=text], input[type=password]' ).forEach( ( input )=>{
         if( input !== null ){
             input.autocomplete = "off";
