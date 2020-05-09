@@ -5,29 +5,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>0trebor0</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-        <script src="./script.js"></script>
-    </head>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+	</head>
+	<script src="./script.js"></script>
     <script>
-        class github{
+        class App extends Github{
             constructor(){
-                this.url = "https://api.github.com";
-                this.username = "0trebor0";
-                this.repos = {};
-                this.user = {};
-            }
-            async getRepos(){
-                this.repos = await fetch( this.url+"/users/"+this.username+"/repos" );
-                this.repos = await this.repos.json();
-            }
-            async getUser(){
-                this.user = await fetch( this.url+"/users/"+this.username);
-                this.user = await this.user.json();
-            }
-        }
-        class App extends github{
-            constructor(){
-                super();
+                super('0trebor0');
                 this.navItems = [{"text":"Projects","href":"#projects"},{"text":"More-Info","href":"#more-info"}];
             }
             onload(){
