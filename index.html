@@ -1,63 +1,88 @@
+
 <!DOCTYPE html>
-<!--
-Copyright 2019 0trebor0.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
--->
 <html>
     <head>
-        <title>0trebor0 Projects</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="shortcut icon" type="image/png" href="https://avatars1.githubusercontent.com/u/9081310?s=460&v=4"/>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.css">
-        <style>
-            @import url('https://fonts.googleapis.com/css?family=Slabo+27px|Staatliches');
-        </style>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>0trebor0</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+        <script src="./script.js"></script>
     </head>
-    <body>
-		<script>
-			var github = "https://api.github.com";
-			var navItems = [{"text":"Projects","href":"#projects"},{"text":"More-Info","href":"#more-info"}];
-			document.body.onload = ()=>{
-				console.log( "Welcome User" );
-				navItems.forEach( ( item )=>{
-					//console.log( item.href.slice(1) );
-					document.getElementById('tabsNavItems').innerHTML += "<li><a href='"+item.href+"' onclick='navItem(this.innerText.toLowerCase())'>"+item.text+"</a></li>";
-				} );
-				if( location.hash.slice(1) ){
-					navItem( location.hash.slice(1) );
-				}
-				getRepos();
-			}
-			function navItem( id ){
-				navItems.forEach( ( item )=>{
-					if( document.getElementById( item.text.toLowerCase() ) ){
-						document.getElementById( item.text.toLowerCase() ).style.display = 'none'
+    <script>
+        class github{
+            constructor(){
+                this.url = "https://api.github.com";
+                this.username = "0trebor0";
+                this.repos = {};
+                this.user = {};
+            }
+            async getRepos(){
+                this.repos = await fetch( this.url+"/users/"+this.username+"/repos" );
+                this.repos = await this.repos.json();
+            }
+            async getUser(){
+                this.user = await fetch( this.url+"/users/"+this.username);
+                this.user = await this.user.json();
+            }
+        }
+        class App extends github{
+            constructor(){
+                super();
+                this.navItems = [{"text":"Projects","href":"#projects"},{"text":"More-Info","href":"#more-info"}];
+            }
+            onload(){
+                this.getRepos();
+                this.getUser();
+                this.setNavItems();
+				
+                setTimeout(()=>{
+                    if( location.hash.slice(1) ){
+                        this.getNavItem( location.hash.slice(1) );
+                    }
+					if( this.user.login ){
+						document.querySelector( '.hero .hero-body .container .title' ).innerHTML = this.user.login+" Portfolio";
 					}
-				});
-				if( document.getElementById( id ) ){
-					if( document.getElementById( id ).style.display == 'none' ){
-						document.getElementById( id ).style.display = "";
-						document.getElementById( id ).scrollIntoView();
-					} else {
-						document.getElementById( id ).style.display = "none";
+					if( this.user.avatar_url ){
+						document.querySelector( '.hero .hero-body .container .image .is-rounded' ).src = this.user.avatar_url;
 					}
-				} else {
-					console.log( "not found "+id );
-				}
-			}
-			function getDateTime( value ){
+					if( this.user.bio ){
+						document.querySelector( '.hero .hero-body .container .subtitle' ).innerHTML = this.user.bio;
+					}
+					if( this.repos.length > 0 ){
+						this.repos.forEach( ( project )=>{
+							if( project.fork !== true ){
+								let description = "";
+								let created = new Date( project.created_at ).toLocaleString();
+								let updated = project.updated_at;
+								if( project.description !== null ){
+									description = project.description;
+								}
+								document.querySelector('#projectsList').innerHTML += "<div class='box'><h2 class='subtitle'><a href='"+project.html_url+"'>"+project.name+"</a></h2><p>Language: "+project.language+" - Created: "+created+" - Last Updated: "+updated+"</p><p>"+description+"</p></div>";
+							}
+						});
+					}
+                    document.querySelector("#main").style.display = "";
+                },1000);
+            }
+            setNavItems(){
+                this.navItems.forEach( ( item )=>{
+                    document.querySelector('.hero-foot .tabs .container ul').innerHTML += "<li><a href='"+item.href+"' onclick='app.getNavItem( this.href )'>"+item.text+"</a></li>";
+                });
+            }
+            getNavItem( id ){
+                id = id.split("#").pop();
+                id = "#"+id;
+                //console.log( id );
+                this.navItems.forEach( ( item )=>{
+                    if( document.querySelector( item.href ) ){
+                        document.querySelector( item.href ).style.display = "none";
+                    }
+                    if( id === item.href && document.querySelector( item.href ) ){
+                        document.querySelector( item.href ).style.display = "";  
+                    }
+                });
+            }
+            getDateTime( value ){
 				d = new Date( value );
 				month = d.getMonth()+1;
 				day = d.getDate();
@@ -65,65 +90,49 @@ limitations under the License.
 				//console.log( day+'/'+month+'/'+year );
 				return day+'/'+month+'/'+year; 
 			}
-			async function getRepos(){
-				var data = await fetch( github+"/users/0trebor0/repos" );
-				data = await data.json();
-				data.forEach( ( project )=>{
-					if( project.name.search('github.io') == -1 ){
-						if( project.fork !== true ){
-							description = "";
-							created = getDateTime( project.created_at );
-							updated = getDateTime( project.updated_at );
-							if( project.description !== null ){
-								description = project.description;
-							}
-							//console.log( project.name+" created:"+created+" updated:"+updated  );
-							document.getElementById('projectsList').innerHTML += "<div class='box'><h1><u>"+project.name+"</u></h1><p>Language: "+project.language+" - Created: "+created+" - Last Updated: "+updated+"</p><p>"+description+"</p><a class='button' href='"+project.html_url+"'>GitHub</a></div>";
-						}
-					}
-				} );
-			}
-		</script>
-		<section class="hero is-dark">
+
+        }
+        window.onload = ()=>{
+            app = new App();
+            app.onload();
+        }
+    </script>
+    <body>
+        <section class="hero is-dark" id="main">
 			<div class="hero-body">
 				<div class="container has-text-centered">
-					<h1 class="title">0trebor0 Portfolio</h1>
+					<h1 class="title"></h1>
 					<figure class="image container is-128x128">
-						<img class="is-rounded" src="https://avatars1.githubusercontent.com/u/9081310?s=460&v=4">
+						<img class="is-rounded">
 					</figure>
-					<h2 class="subtitle">I'm a tech lover, enjoy php, nodejs, css, html and javascript.</br> Currently learning android development, Java.</h2>
+					<h2 class="subtitle"></h2>
 					<p>Contact me on:</p>
-					<p><a href="https://www.facebook.com/0trebor0" target="_blank" style='color:white;'>Facebook</a> | <a href="https://discord.gg/hVAJscM" target="_blank" style='color:white;'>Discord</a> | <a href="https://www.instagram.com/0trebor00/" target="_blank" style='color:white;'>Instagram</a></p>
+					<p><a href="https://www.facebook.com/0trebor0" target="_blank" style='color:white;'>Facebook</a> | <a href="https://discord.gg/hVAJscM" target="_blank" style='color:white;'>Discord</a> | <a href="https://www.instagram.com/0trebor00/" target="_blank" style='color:white;'>Instagram</a> | <a href="https://github.com/0trebor0" target="_blank" style='color:white;'>Github</a></p>
 				</div>
 			</div>
 			<div class="hero-foot">
 				<nav class="tabs is-boxed is-fullwidth">
 					<div class="container">
-						<ul id="tabsNavItems"></ul>
+						<ul></ul>
 					</div>
 				</nav>
 			</div>
-		</section>
-		<section class="hero" id="projects">
+        </section>
+        <section class="hero" id="more-info">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <p class="title">Whos is 0trebor0?</p>
+                    <p>I'm a Junior Developer, I have used Nodejs, php, css, html.</p>
+                    <p>You can find some projects on my github account /0trebor0?tab=repositories</p>
+                </div>
+            </div>
+        </section>
+		<section class="hero" id="projects" style="display:none;">
 			<div class="hero-body">
-				<div class="container has-text-centered"id="projectsList">
+				<div class="container has-text-centered" id="projectsList">
 					<p class="title">My Projects</p>
 				</div>
 			</div>
 		</section>
-		<section class="hero" id="more-info" style="display:none;">
-				<div class="hero-body">
-					<div class="container has-text-centered">
-						<p class="title">Whos is 0trebor0?</p>
-						<p>I have coded on php for 3 years, I'm always learning and improving my skills.</p>
-						<p>I started learning nodejs one year ago after using javascript on web browsers, I found it interesting and easy to learn as there is loads of tutorials online. i still get things wrong but thats alright because the errors helps me to improve.</p>
-					</div>
-				</div>
-			</section>
-		<footer class="footer">
-			<div class="content has-text-centered">
-				<p>Theme <a href='https://bulma.io'>Bulma.io</a></p>
-			</div>
-		</footer>
     </body>
 </html>
