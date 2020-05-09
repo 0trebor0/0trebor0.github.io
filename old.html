@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>0trebor0</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    </head>
+    <script>
+        class github{
+            constructor(){
+                this.url = "https://api.github.com";
+                this.username = "0trebor0";
+                this.repos = {};
+                this.user = {};
+            }
+            async getRepos(){
+                this.repos = await fetch( this.url+"/users/"+this.username+"/repos" );
+                this.repos = await this.repos.json();
+            }
+            async getUser(){
+                this.user = await fetch( this.url+"/users/"+this.username);
+                this.user = await this.user.json();
+            }
+        }
+        class App extends github{
+            constructor(){
+                super();
+                this.navItems = [{"text":"Projects","href":"#projects"},{"text":"More-Info","href":"#more-info"}];
+            }
+            onload(){
+                this.getRepos();
+                this.getUser();
+                this.setNavItems();
+				
+                setTimeout(()=>{
+                    if( location.hash.slice(1) ){
+                        this.getNavItem( location.hash.slice(1) );
+                    }
+					if( this.user.login ){
+						document.querySelector( '.hero .hero-body .container .title' ).innerHTML = this.user.login+" Portfolio";
+					}
+					if( this.user.avatar_url ){
+						document.querySelector( '.hero .hero-body .container .image .is-rounded' ).src = this.user.avatar_url;
+					}
+					if( this.user.bio ){
+						document.querySelector( '.hero .hero-body .container .subtitle' ).innerHTML = this.user.bio;
+					}
+					if( this.repos.length > 0 ){
+						this.repos.forEach( ( project )=>{
+							if( project.fork !== true ){
+								let description = "";
+								let created = new Date( project.created_at ).toLocaleString();
+								let updated = project.updated_at;
+								if( project.description !== null ){
+									description = project.description;
+								}
+								document.querySelector('#projectsList').innerHTML += "<div class='box'><h2 class='subtitle'><a href='"+project.html_url+"'>"+project.name+"</a></h2><p>Language: "+project.language+" - Created: "+created+" - Last Updated: "+updated+"</p><p>"+description+"</p></div>";
+							}
+						});
+					}
+                    document.querySelector("#main").style.display = "";
+                },1000);
+            }
+            setNavItems(){
+                this.navItems.forEach( ( item )=>{
+                    document.querySelector('.hero-foot .tabs .container ul').innerHTML += "<li><a href='"+item.href+"' onclick='app.getNavItem( this.href )'>"+item.text+"</a></li>";
+                });
+            }
+            getNavItem( id ){
+                id = id.split("#").pop();
+                id = "#"+id;
+                //console.log( id );
+                this.navItems.forEach( ( item )=>{
+                    if( document.querySelector( item.href ) ){
+                        document.querySelector( item.href ).style.display = "none";
+                    }
+                    if( id === item.href && document.querySelector( item.href ) ){
+                        document.querySelector( item.href ).style.display = "";  
+                    }
+                });
+            }
+            getDateTime( value ){
+				d = new Date( value );
+				month = d.getMonth()+1;
+				day = d.getDate();
+				year = d.getFullYear();
+				//console.log( day+'/'+month+'/'+year );
+				return day+'/'+month+'/'+year; 
+			}
+
+        }
+        window.onload = ()=>{
+            app = new App();
+            app.onload();
+        }
+    </script>
+    <body>
+        <section class="hero is-dark" id="main">
+			<div class="hero-body">
+				<div class="container has-text-centered">
+					<h1 class="title"></h1>
+					<figure class="image container is-128x128">
+						<img class="is-rounded">
+					</figure>
+					<h2 class="subtitle"></h2>
+					<p>Contact me on:</p>
+					<p><a href="https://www.facebook.com/0trebor0" target="_blank" style='color:white;'>Facebook</a> | <a href="https://discord.gg/hVAJscM" target="_blank" style='color:white;'>Discord</a> | <a href="https://www.instagram.com/0trebor00/" target="_blank" style='color:white;'>Instagram</a> | <a href="https://github.com/0trebor0" target="_blank" style='color:white;'>Github</a></p>
+				</div>
+			</div>
+			<div class="hero-foot">
+				<nav class="tabs is-boxed is-fullwidth">
+					<div class="container">
+						<ul></ul>
+					</div>
+				</nav>
+			</div>
+        </section>
+        <section class="hero" id="more-info">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <p class="title">Whos is 0trebor0?</p>
+                    <p>I'm a Junior Developer, I have used Nodejs, php, css, html.</p>
+                    <p>You can find some projects on my github account /0trebor0?tab=repositories</p>
+                </div>
+            </div>
+        </section>
+		<section class="hero" id="projects" style="display:none;">
+			<div class="hero-body">
+				<div class="container has-text-centered" id="projectsList">
+					<p class="title">My Projects</p>
+				</div>
+			</div>
+		</section>
+    </body>
+</html>
