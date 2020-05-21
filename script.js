@@ -107,6 +107,14 @@ app.audio = ( id = null,json = null)=>{
 	}
 	return player;
 }
+app.isJson = ( data )=>{
+	try{
+		JSON.parse( data );
+	}catch( data ){
+		return false;
+	}
+	return true;
+}
 class Github{
     constructor( username = null ){
         this.url = "https://api.github.com";
