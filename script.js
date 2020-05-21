@@ -44,6 +44,14 @@ element = ( id = null, from = null )=>{
     }
     return e;
 }
+app.isJson = ( data )=>{
+try{
+    JSON.parse( data );
+}catch( data ){
+    return false;
+}
+return true;
+}
 app.video = (json)=>{
 	let videoplayer;
 	if( "element" in json ){
