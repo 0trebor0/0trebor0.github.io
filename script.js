@@ -19,6 +19,8 @@ window.onbeforeunload = ()=>{
     } );
 }
 app.windowOnload[0] = ()=>{
+	app.urlparam = new URLSearchParams( location.search );
+	app.urlHash = location.hash.slice(1);
     console.log("app.windowOnresize.push(FUNCTION)");
     console.log("app.windowOnload.push(FUNCTION)");
     console.log("app.windowOnclose.push(FUNCTION)");
