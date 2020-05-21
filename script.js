@@ -77,6 +77,36 @@ app.video = ( id = null,json = null)=>{
 	}
 	return player;
 }
+app.audio = ( id = null,json = null)=>{
+	let player;
+	if( document.querySelector( id ) ){
+		player = document.querySelector( id );
+		if ('mediaSession' in navigator) {
+			navigator.mediaSession.metadata = new MediaMetadata(json);
+			navigator.mediaSession.setActionHandler('play',()=>{
+				player.play();
+			});
+			navigator.mediaSession.setActionHandler('pause',()=>{
+				player.pause();
+			});
+			navigator.mediaSession.setActionHandler('seekbackward', ()=>{
+				player.currentTime = Math.max(player.currentTime - 10, 0);
+			});
+			navigator.mediaSession.setActionHandler('seekforward', ()=>{
+				player.currentTime = Math.min(player.currentTime + 10, player.duration);
+			});
+		}
+		if( "src" in json ){
+			player.src = json.src;
+		}
+		if( "stream" in json && json.stream == true ){
+			player.stream = player.captureStream();
+		}
+	} else {
+		console.log("can't find ",id);
+	}
+	return player;
+}
 class Github{
     constructor( username = null ){
         this.url = "https://api.github.com";
