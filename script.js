@@ -44,7 +44,6 @@ element = ( id = null, from = null )=>{
     }
     return e;
 }
-<<<<<<< HEAD
 app.video = ( id = null,json = null)=>{
 	let player;
 	if( document.querySelector( id ) ){
@@ -63,38 +62,6 @@ app.video = ( id = null,json = null)=>{
 			navigator.mediaSession.setActionHandler('seekforward', ()=>{
 				player.currentTime = Math.min(player.currentTime + 10, player.duration);
 			});
-=======
-app.isJson = ( data )=>{
-try{
-    JSON.parse( data );
-}catch( data ){
-    return false;
-}
-return true;
-}
-app.video = (json)=>{
-	let videoplayer;
-	if( "element" in json ){
-		videoplayer = json.element;
-		if( "src" in json ){
-			videoplayer.src = json.src;
-		}
-		if( "stream" in json && json.stream == true ){
-			videoplayer.stream = videoplayer.captureStream();
-		}
-		videoplayer.setAutoPlay = (value)=>{
-			videoplayer.autoplay = value;
-		}
-		videoplayer.getAutoPlay = ()=>{
-			return videoplayer.autoplay;
-		}
-
-		videoplayer.setPoster = (value)=>{
-			videoplayer.poster = value;
-		}
-		videoplayer.getPoster = ()=>{
-			return videoplayer.poster;
->>>>>>> fcd6c42b22f462436d88be676175169635fda586
 		}
 		if( "src" in json ){
 			player.src = json.src;
