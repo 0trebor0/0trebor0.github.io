@@ -1,7 +1,8 @@
-var app = {};
-app.windowOnresize = [];
-app.windowOnload = [];
-app.windowOnclose = [];
+var app = {
+	windowOnresize:[],
+	windowOnload:[],
+	windowOnclose:[]
+};
 window.onload = ()=>{
     app.windowOnload.forEach( ( d )=>{
         d()
@@ -40,6 +41,57 @@ element = ( id = null, from = null )=>{
         };
     }
     return e;
+}
+app.video = (json)=>{
+	let videoplayer;
+	if( "element" in json ){
+		videoplayer = json.element;
+		if( "src" in json ){
+			videoplayer.src = json.src;
+		}
+		if( "stream" in json && json.stream == true ){
+			videoplayer.stream = videoplayer.captureStream();
+		}
+		videoplayer.setAutoPlay = (value)=>{
+			videoplayer.autoplay = value;
+		}
+		videoplayer.getAutoPlay = ()=>{
+			return videoplayer.autoplay;
+		}
+
+		videoplayer.setPoster = (value)=>{
+			videoplayer.poster = value;
+		}
+		videoplayer.getPoster = ()=>{
+			return videoplayer.poster;
+		}
+
+		videoplayer.setWidth = (value)=>{
+			videoplayer.width = value;
+		}
+		videoplayer.getWidth = ()=>{
+			return videoplayer.width;
+		}
+
+		videoplayer.setHeight = (value)=>{
+			videoplayer.height = value;
+		}
+		videoplayer.getHeight = ()=>{
+			return videoplayer.height;
+		}
+
+		videoplayer.setSrc = (value)=>{
+			videoplayer.src = value;
+		}
+		videoplayer.getSrc = ()=>{
+			return videoplayer.src;
+		}
+
+		videoplayer.on = (status, callback)=>{
+			videoplayer[status] = callback;
+		};
+	}
+	return videoplayer;
 }
 class Github{
     constructor( username = null ){
