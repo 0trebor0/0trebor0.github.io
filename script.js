@@ -44,56 +44,38 @@ element = ( id = null, from = null )=>{
     }
     return e;
 }
-app.video = (json)=>{
-	let videoplayer;
-	if( "element" in json ){
-		videoplayer = json.element;
+app.video = ( id = null,json = null)=>{
+	let player;
+	if( document.querySelector( id ) ){
+		player = document.querySelector( id );
+		if ('mediaSession' in navigator) {
+			navigator.mediaSession.metadata = new MediaMetadata(json);
+			navigator.mediaSession.setActionHandler('play',()=>{
+				player.play();
+			});
+			navigator.mediaSession.setActionHandler('pause',()=>{
+				player.pause();
+			});
+			navigator.mediaSession.setActionHandler('seekbackward', ()=>{
+				player.currentTime = Math.max(player.currentTime - 10, 0);
+			});
+			navigator.mediaSession.setActionHandler('seekforward', ()=>{
+				player.currentTime = Math.min(player.currentTime + 10, player.duration);
+			});
+		}
 		if( "src" in json ){
-			videoplayer.src = json.src;
+			player.src = json.src;
+		}
+		if( "artwork" in json && json.artwork[0].src ){
+			player.poster = json.artwork[0].src;
 		}
 		if( "stream" in json && json.stream == true ){
-			videoplayer.stream = videoplayer.captureStream();
+			player.stream = player.captureStream();
 		}
-		videoplayer.setAutoPlay = (value)=>{
-			videoplayer.autoplay = value;
-		}
-		videoplayer.getAutoPlay = ()=>{
-			return videoplayer.autoplay;
-		}
-
-		videoplayer.setPoster = (value)=>{
-			videoplayer.poster = value;
-		}
-		videoplayer.getPoster = ()=>{
-			return videoplayer.poster;
-		}
-
-		videoplayer.setWidth = (value)=>{
-			videoplayer.width = value;
-		}
-		videoplayer.getWidth = ()=>{
-			return videoplayer.width;
-		}
-
-		videoplayer.setHeight = (value)=>{
-			videoplayer.height = value;
-		}
-		videoplayer.getHeight = ()=>{
-			return videoplayer.height;
-		}
-
-		videoplayer.setSrc = (value)=>{
-			videoplayer.src = value;
-		}
-		videoplayer.getSrc = ()=>{
-			return videoplayer.src;
-		}
-
-		videoplayer.on = (status, callback)=>{
-			videoplayer[status] = callback;
-		};
+	} else {
+		console.log("can't find ",id);
 	}
-	return videoplayer;
+	return player;
 }
 class Github{
     constructor( username = null ){
