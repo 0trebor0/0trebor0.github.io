@@ -107,6 +107,25 @@ app.audio = ( id = null,json = null)=>{
 	}
 	return player;
 }
+app.createElement = ( json )=>{
+    let u = {};
+    if( "name" in json ){
+        if( "inside" in json ){
+            u = document.createElement( json.name );
+            if( document.querySelector(  json.inside ) ){
+                document.querySelector(  json.inside ).appendChild( u );
+            } else {
+                return {'status':'error','msg':'cant find '+json.inside};
+            }
+        } else {
+            u = document.createElement( json.name );
+            document.body.appendChild( u );
+        }
+        return u;
+    } else {
+        return {'status':'error','msg':'Missing Name'};
+    }
+}
 app.isJson = ( data )=>{
 	try{
 		JSON.parse( data );
