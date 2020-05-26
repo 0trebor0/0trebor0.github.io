@@ -4,6 +4,14 @@ var app = {
 	windowOnclose:[]
 };
 window.onload = ()=>{
+    app.urlparam = new URLSearchParams( location.search );
+    app.urlHash = location.hash.slice(1);
+    console.log(app);
+    document.querySelectorAll( 'input[type=text], input[type=password]' ).forEach( ( input )=>{
+        if( input !== null ){
+            input.autocomplete = "off";
+        }
+    } );
     app.windowOnload.forEach( ( d )=>{
         d()
     } );
@@ -18,19 +26,7 @@ window.onbeforeunload = ()=>{
         d();
     } );
 }
-app.windowOnload[0] = ()=>{
-	app.urlparam = new URLSearchParams( location.search );
-	app.urlHash = location.hash.slice(1);
-    console.log("app.windowOnresize.push(FUNCTION)");
-    console.log("app.windowOnload.push(FUNCTION)");
-    console.log("app.windowOnclose.push(FUNCTION)");
-    document.querySelectorAll( 'input[type=text], input[type=password]' ).forEach( ( input )=>{
-        if( input !== null ){
-            input.autocomplete = "off";
-        }
-    } );
-}
-element = ( id = null, from = null )=>{
+var element = ( id = null, from = null )=>{
     var e = null;
     if( id !== null ){
         e = document.querySelector( id );
@@ -45,80 +41,93 @@ element = ( id = null, from = null )=>{
     return e;
 }
 app.video = ( id = null,json = null)=>{
-	let player;
-	if( document.querySelector( id ) ){
-		player = document.querySelector( id );
-		if ('mediaSession' in navigator) {
-			navigator.mediaSession.metadata = new MediaMetadata(json);
-			navigator.mediaSession.setActionHandler('play',()=>{
-				player.play();
-			});
-			navigator.mediaSession.setActionHandler('pause',()=>{
-				player.pause();
-			});
-			navigator.mediaSession.setActionHandler('seekbackward', ()=>{
-				player.currentTime = Math.max(player.currentTime - 10, 0);
-			});
-			navigator.mediaSession.setActionHandler('seekforward', ()=>{
-				player.currentTime = Math.min(player.currentTime + 10, player.duration);
-			});
-		}
-		if( "src" in json ){
-			player.src = json.src;
-		}
-		if( "artwork" in json && json.artwork[0].src ){
-			player.poster = json.artwork[0].src;
-		}
-		if( "stream" in json && json.stream == true ){
-			player.stream = player.captureStream();
-		}
-	} else {
-		console.log("can't find ",id);
-	}
+    let player;
+    if( "nodeType" in id && id.nodeType === 1 ){
+        player = id;
+    } else if( document.querySelector( id ) ){
+        player = document.querySelector( id );
+    }
+    if( player.nodeType === 1 ){
+        	if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata(json);
+                navigator.mediaSession.setActionHandler('play',()=>{
+                    player.play();
+                });
+                navigator.mediaSession.setActionHandler('pause',()=>{
+                    player.pause();
+                });
+                navigator.mediaSession.setActionHandler('seekbackward', ()=>{
+                    player.currentTime = Math.max(player.currentTime - 10, 0);
+                });
+                navigator.mediaSession.setActionHandler('seekforward', ()=>{
+                    player.currentTime = Math.min(player.currentTime + 10, player.duration);
+                });
+            }
+            if( json !== null ){
+                if( "src" in json ){
+                    player.src = json.src;
+                }
+                if( "artwork" in json && json.artwork[0].src ){
+                    player.poster = json.artwork[0].src;
+                }
+                if( "stream" in json && json.stream == true ){
+                    player.stream = player.captureStream();
+                }
+            }
+    } else {
+        return {'status':'error','msg':'cant find '+id};
+    }
 	return player;
 }
 app.audio = ( id = null,json = null)=>{
 	let player;
-	if( document.querySelector( id ) ){
-		player = document.querySelector( id );
-		if ('mediaSession' in navigator) {
-			navigator.mediaSession.metadata = new MediaMetadata(json);
-			navigator.mediaSession.setActionHandler('play',()=>{
-				player.play();
-			});
-			navigator.mediaSession.setActionHandler('pause',()=>{
-				player.pause();
-			});
-			navigator.mediaSession.setActionHandler('seekbackward', ()=>{
-				player.currentTime = Math.max(player.currentTime - 10, 0);
-			});
-			navigator.mediaSession.setActionHandler('seekforward', ()=>{
-				player.currentTime = Math.min(player.currentTime + 10, player.duration);
-			});
-		}
-		if( "src" in json ){
-			player.src = json.src;
-		}
-		if( "stream" in json && json.stream == true ){
-			player.stream = player.captureStream();
-		}
-	} else {
-		console.log("can't find ",id);
-	}
+    if( "nodeType" in id && id.nodeType === 1 ){
+        player = id;
+    } else if( document.querySelector( id ) ){
+        player = document.querySelector( id );
+    }
+    if( player.nodeType === 1 ){
+        	if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata(json);
+                navigator.mediaSession.setActionHandler('play',()=>{
+                    player.play();
+                });
+                navigator.mediaSession.setActionHandler('pause',()=>{
+                    player.pause();
+                });
+                navigator.mediaSession.setActionHandler('seekbackward', ()=>{
+                    player.currentTime = Math.max(player.currentTime - 10, 0);
+                });
+                navigator.mediaSession.setActionHandler('seekforward', ()=>{
+                    player.currentTime = Math.min(player.currentTime + 10, player.duration);
+                });
+            }
+            if( json !== null ){
+                if( "src" in json ){
+                    player.src = json.src;
+                }
+                if( "stream" in json && json.stream == true ){
+                    player.stream = player.captureStream();
+                }
+            }
+    } else {
+        return {'status':'error','msg':'cant find '+id};
+    }
 	return player;
 }
 app.createElement = ( json )=>{
     let u = {};
     if( "name" in json ){
+        u = document.createElement( json.name );
         if( "inside" in json ){
-            u = document.createElement( json.name );
-            if( document.querySelector(  json.inside ) ){
+            if( "nodeType" in json.inside && json.inside.nodeType === 1 ){
+                json.inside.appendChild( u );
+            } else if( document.querySelector(  json.inside ) ){
                 document.querySelector(  json.inside ).appendChild( u );
             } else {
                 return {'status':'error','msg':'cant find '+json.inside};
             }
         } else {
-            u = document.createElement( json.name );
             document.body.appendChild( u );
         }
         return u;
@@ -134,22 +143,35 @@ app.isJson = ( data )=>{
 	}
 	return true;
 }
-class Github{
-    constructor( username = null ){
-        this.url = "https://api.github.com";
-        this.repos = {};
-        this.user = {};
-        this.username = username;
+app.github = ( username = null )=>{
+    let h = {"api":"https://api.github.com"};
+    if( username == null ){
+        return {'status':'error','msg':'Missing Username'};
+    } else {
+        h.repos = fetch( h.api+"/users/"+username+"/repos" ).then(res=>res.json());
+        h.user = fetch( h.api+"/users/"+username ).then(res=>res.json());
+        /* EXAMPLE
+        app.github('username').user.then( d=>{
+            console.log(d);
+        });
+        app.github('username').repos.then( d=>{
+            console.log(d);
+        });
+        */
     }
-    async getRepos(){
-        this.repos = await fetch( this.url+"/users/"+this.username+"/repos" );
-        this.repos = await this.repos.json();
-    }
-    async getUser(){
-        this.user = await fetch( this.url+"/users/"+this.username);
-        this.user = await this.user.json();
-    }
+    return h;
 }
+//START, NEED TO TEST THIS
+// app.peer = ( json = null )=>{
+//     let u;
+//     let iceServers = { "iceServers": [{ "url": "stun:stun2.1.google.com:19302" }]};
+//     if( json == null ){
+//         //Automatic Setup
+//     } else if( "iceservers" in json ){
+//         //Custom Setup
+//         u = new RTCPeerConnection( json.iceServers );
+//     }
+// }//END
 class Peers{
     constructor( config = null ){
         this.peers = {};
