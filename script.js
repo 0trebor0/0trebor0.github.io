@@ -40,6 +40,17 @@ var element = ( id = null, from = null )=>{
     }
     return e;
 }
+app.websocket = ( url = null )=>{
+    let websocket;
+    if( url !== null ){
+        if( "WebSocket" in window ){
+            websocket = new WebSocket( url );
+        } else {
+            websocket = {'status':'error','msg':'browser dont support websocket'};
+        }
+    }
+    return websocket;
+}
 app.video = ( id = null,json = null)=>{
     let player;
     if( id.nodeType && id.nodeType === 1 ){
