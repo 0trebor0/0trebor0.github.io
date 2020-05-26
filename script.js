@@ -42,7 +42,7 @@ var element = ( id = null, from = null )=>{
 }
 app.video = ( id = null,json = null)=>{
     let player;
-    if( id.nodeType.id && id.nodeType === 1 ){
+    if( id.nodeType && id.nodeType === 1 ){
         player = id;
     } else if( document.querySelector( id ) ){
         player = document.querySelector( id );
@@ -122,7 +122,7 @@ app.createElement = ( json )=>{
         if( "inside" in json ){
             if( json.inside.nodeType && json.inside.nodeType === 1 ){
                 json.inside.appendChild( u );
-            } else if( document.querySelector(  json.inside ) ){
+            } else if( document.querySelector( json.inside ) ){
                 document.querySelector(  json.inside ).appendChild( u );
             } else {
                 return {'status':'error','msg':'cant find '+json.inside};
