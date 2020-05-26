@@ -42,11 +42,11 @@ var element = ( id = null, from = null )=>{
 }
 app.video = ( id = null,json = null)=>{
     let player;
-    if( app.isJson( id ) && "nodeType" in id && id.nodeType === 1){
-		player = id;
-	} else if( document.querySelector( id ) ){
-		player = document.querySelector( id );
-	}
+    if( id.nodeType.id && id.nodeType === 1 ){
+        player = id;
+    } else if( document.querySelector( id ) ){
+        player = document.querySelector( id );
+    }
     if( player.nodeType === 1 ){
         	if ('mediaSession' in navigator) {
                 navigator.mediaSession.metadata = new MediaMetadata(json);
@@ -81,7 +81,7 @@ app.video = ( id = null,json = null)=>{
 }
 app.audio = ( id = null,json = null)=>{
 	let player;
-    if( app.isJson( id ) && "nodeType" in id && id.nodeType === 1 ){
+    if( "nodeType" in id && id.nodeType === 1 ){
         player = id;
     } else if( document.querySelector( id ) ){
         player = document.querySelector( id );
@@ -120,7 +120,7 @@ app.createElement = ( json )=>{
     if( "name" in json ){
         u = document.createElement( json.name );
         if( "inside" in json ){
-            if( app.isJson( json.inside ) && "nodeType" in json.inside && json.inside.nodeType === 1 ){
+            if( "nodeType" in json.inside && json.inside.nodeType === 1 ){
                 json.inside.appendChild( u );
             } else if( document.querySelector(  json.inside ) ){
                 document.querySelector(  json.inside ).appendChild( u );
