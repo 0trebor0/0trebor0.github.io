@@ -90,41 +90,42 @@ app.video = ( id = null,json = null)=>{
     }
 	return player;
 }
-app.audio = ( id = null,json = null)=>{
-	let player;
-    if( id.nodeType && id.nodeType === 1 ){
-        player = id;
-    } else if( document.querySelector( id ) ){
-        player = document.querySelector( id );
+app.audio = (json = null)=>{
+    let audio;
+    if('id' in json && document.querySelector(json.id)){
+        audio = document.querySelector(json.id);
+    } else if( 'element' in json && json.element.nodeType && json.element.nodeType === 1 ){
+        audio = json.element;
+    }else{
+        audio = new Audio();
     }
-    if( player.nodeType === 1 ){
-        	if ('mediaSession' in navigator) {
-                navigator.mediaSession.metadata = new MediaMetadata(json);
-                navigator.mediaSession.setActionHandler('play',()=>{
-                    player.play();
-                });
-                navigator.mediaSession.setActionHandler('pause',()=>{
-                    player.pause();
-                });
-                navigator.mediaSession.setActionHandler('seekbackward', ()=>{
-                    player.currentTime = Math.max(player.currentTime - 10, 0);
-                });
-                navigator.mediaSession.setActionHandler('seekforward', ()=>{
-                    player.currentTime = Math.min(player.currentTime + 10, player.duration);
-                });
-            }
-            if( json !== null ){
-                if( "src" in json ){
-                    player.src = json.src;
-                }
-                if( "stream" in json && json.stream == true ){
-                    player.stream = player.captureStream();
-                }
-            }
-    } else {
-        return {'status':'error','msg':'cant find '+id};
+    if(audio.nodeType === 1){
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata(json);
+            navigator.mediaSession.setActionHandler('play',()=>{
+                audio.play();
+            });
+            navigator.mediaSession.setActionHandler('pause',()=>{
+                audio.pause();
+            });
+            navigator.mediaSession.setActionHandler('seekbackward', ()=>{
+                audio.currentTime = Math.max(player.currentTime - 10, 0);
+            });
+            navigator.mediaSession.setActionHandler('seekforward', ()=>{
+                audio.currentTime = Math.min(audio.currentTime + 10, audio.duration);
+            });
+        }
+        if( 'src' in json &&  json.src ){
+            audio.src = json.src;
+        }
+        if( "artwork" in json && json.artwork[0].src ){
+            audio.poster = json.artwork[0].src;
+        }
+        if( "stream" in json && json.stream == true ){
+            audio.stream = audio.captureStream();
+        }
     }
-	return player;
+    return audio;
 }
 app.createElement = ( json )=>{
     let u = {};
