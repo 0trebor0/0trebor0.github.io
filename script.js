@@ -58,7 +58,7 @@ app.video = ( id = null,json = null)=>{
     } else if( 'element' in json && json.element.nodeType && json.element.nodeType === 1 ){
         player = json.element;
     }
-    if(player.nodeType === 1){
+    if( player.nodeType && player.nodeType === 1){
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata(json);
             navigator.mediaSession.setActionHandler('play',()=>{
@@ -93,7 +93,7 @@ app.audio = (json = null)=>{
     } else if( 'element' in json && json.element.nodeType && json.element.nodeType === 1 ){
         player = json.element;
     }
-    if(player.nodeType === 1){
+    if( player.nodeType && player.nodeType === 1){
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata(json);
             navigator.mediaSession.setActionHandler('play',()=>{
