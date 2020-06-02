@@ -51,14 +51,14 @@ app.websocket = ( url = null )=>{
     }
     return websocket;
 }
-app.video = ( id = null,json = null)=>{
+app.video = (json = null)=>{
     let player;
-    if('id' in json && document.querySelector(json.id)){
+    if(json.id && document.querySelector(json.id)){
         player = document.querySelector(json.id);
-    } else if( 'element' in json && json.element.nodeType && json.element.nodeType === 1 ){
+    } else if(json.element && json.element.nodeType && json.element.nodeType === 1 ){
         player = json.element;
     } else {
-        player = app.createElement({'name':'video'});
+        player = {'status':'error','msg':'cant find valid video'};
     }
     if( player.nodeType && player.nodeType === 1){
         if ('mediaSession' in navigator) {
@@ -90,12 +90,12 @@ app.video = ( id = null,json = null)=>{
 }
 app.audio = (json = null)=>{
     let player;
-    if('id' in json && document.querySelector(json.id)){
+    if(json.id && document.querySelector(json.id)){
         player = document.querySelector(json.id);
-    } else if( 'element' in json && json.element.nodeType && json.element.nodeType === 1 ){
+    } else if(json.element && json.element.nodeType && json.element.nodeType === 1 ){
         player = json.element;
     } else {
-        app.createElement({'name':'audio'})
+        player = {'status':'error','msg':'cant find valid audio'};
     }
     if( player.nodeType && player.nodeType === 1){
         if ('mediaSession' in navigator) {
