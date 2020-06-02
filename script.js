@@ -57,6 +57,8 @@ app.video = ( id = null,json = null)=>{
         player = document.querySelector(json.id);
     } else if( 'element' in json && json.element.nodeType && json.element.nodeType === 1 ){
         player = json.element;
+    } else {
+        player = app.createElement({'name':'video'});
     }
     if( player.nodeType && player.nodeType === 1){
         if ('mediaSession' in navigator) {
@@ -92,6 +94,8 @@ app.audio = (json = null)=>{
         player = document.querySelector(json.id);
     } else if( 'element' in json && json.element.nodeType && json.element.nodeType === 1 ){
         player = json.element;
+    } else {
+        app.createElement({'name':'audio'})
     }
     if( player.nodeType && player.nodeType === 1){
         if ('mediaSession' in navigator) {
