@@ -162,6 +162,10 @@ app.createElement = ( json )=>{
                 //Add src to element
                 u.src = json.src;
             }
+            if( json.href ){
+                //Add href to element
+                u.href = json.href;
+            }
             if( json.height ){
                 //Add height to element
                 u.height = json.height;
