@@ -154,6 +154,10 @@ app.createElement = ( json )=>{
                 //Add Id To element
                 u.id = json.id;
             }
+            if( json.type ){
+                //Add Type To element
+                u.type = json.type;
+            }
             if( json.onclick && typeof json.onclick == 'function'){
                 //Add onclick event
                 u.onclick = json.onclick;
