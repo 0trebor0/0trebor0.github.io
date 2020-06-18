@@ -165,16 +165,24 @@ app.createElement = ( json )=>{
                 u.onclick = json.onclick;
             }
             if( json.src ){
+                //Add src to element
                 u.src = json.src;
             }
             if( json.height ){
+                //Add height to element
                 u.height = json.height;
             }
             if( json.width ){
+                //Add width to element
                 u.width = json.width;
             }
             if( json.alt ){
+                //Add alt to element
                 u.alt = json.alt;
+            }
+            if( json.oncreate && typeof json.oncreate == 'function' ){
+                //Run function on element create
+                json.oncreate(u);
             }
             return u;
         } else {
