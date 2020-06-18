@@ -46,7 +46,7 @@ app.websocket = ( url = null )=>{
         if( "WebSocket" in window ){
             websocket = new WebSocket( url );
         } else {
-            websocket = {'status':'error','msg':'browser dont support websocket'};
+            websocket = {'type':'error','msg':'browser dont support websocket'};
         }
     }
     return websocket;
@@ -58,7 +58,7 @@ app.video = (json = null)=>{
     } else if(json.element && json.element.nodeType && json.element.nodeType === 1 ){
         player = json.element;
     } else {
-        player = {'status':'error','msg':'cant find valid video'};
+        player = {'type':'error','msg':'cant find valid video'};
     }
     if( player.nodeType && player.nodeType === 1){
         if ('mediaSession' in navigator) {
@@ -95,7 +95,7 @@ app.audio = (json = null)=>{
     } else if(json.element && json.element.nodeType && json.element.nodeType === 1 ){
         player = json.element;
     } else {
-        player = {'status':'error','msg':'cant find valid audio'};
+        player = {'type':'error','msg':'cant find valid audio'};
     }
     if( player.nodeType && player.nodeType === 1){
         if ('mediaSession' in navigator) {
@@ -203,7 +203,7 @@ app.isJson = ( data )=>{
 app.github = ( username = null )=>{
     let h = {"api":"https://api.github.com"};
     if( username == null ){
-        return {'status':'error','msg':'Missing Username'};
+        return {'type':'error','msg':'Missing Username'};
     } else {
         h.repos = fetch( h.api+"/users/"+username+"/repos" ).then(res=>res.json());
         h.user = fetch( h.api+"/users/"+username ).then(res=>res.json());
