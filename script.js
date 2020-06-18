@@ -15,6 +15,11 @@ window.onload = ()=>{
     app.windowOnload.forEach( ( d )=>{
         d()
     } );
+    if( "WebSocket" in window ){
+        app.websocket = true;
+    } else {
+        app.websocket = false;
+    }
 }
 window.onresize = ()=>{
     app.windowOnresize.forEach( (d)=>{
@@ -39,17 +44,6 @@ var element = ( id = null, from = null )=>{
         };
     }
     return e;
-}
-app.websocket = ( url = null )=>{
-    let websocket;
-    if( url !== null ){
-        if( "WebSocket" in window ){
-            websocket = new WebSocket( url );
-        } else {
-            websocket = {'type':'error','msg':'browser dont support websocket'};
-        }
-    }
-    return websocket;
 }
 app.video = (json = null)=>{
     let player;
