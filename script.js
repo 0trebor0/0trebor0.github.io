@@ -127,22 +127,61 @@ app.audio = (json = null)=>{
 }
 app.createElement = ( json )=>{
     let u = {};
-    if( "name" in json ){
-        u = document.createElement( json.name );
-        if( "inside" in json ){
-            if( json.inside.nodeType && json.inside.nodeType === 1 ){
-                json.inside.appendChild( u );
-            } else if( document.querySelector( json.inside ) ){
-                document.querySelector(  json.inside ).appendChild( u );
+    if( typeof json == 'object' ){
+        if( "name" in json ){
+            u = document.createElement( json.name );
+            if( "inside" in json ){
+                if( json.inside.nodeType && json.inside.nodeType === 1 ){
+                    json.inside.appendChild( u );
+                } else if( document.querySelector( json.inside ) ){
+                    document.querySelector(  json.inside ).appendChild( u );
+                } else {
+                    return {'type':'error','msg':'cant find '+json.inside};
+                }
             } else {
-                return {'status':'error','msg':'cant find '+json.inside};
+                //Adding to Body
+                document.body.appendChild( u );
             }
+            if( json.class && json.class.length > 0){
+                //Loop to add class
+                json.class.forEach((c)=>{
+                    u.classList.add(c);
+                });
+            }
+            if( json.body && typeof json.body == 'string' ){
+                u.innerHTML = json.body;
+            } else if( json.body && typeof json.body == 'object' && json.body.length > 0 ){
+                json.body.forEach((b)=>{
+                    b.inside = u;
+                    app.createElement(b);
+                });
+            }
+            if( json.id ){
+                //Add Id To element
+                u.id = json.id;
+            }
+            if( json.onclick && typeof json.onclick == 'function'){
+                //Add onclick event
+                u.onclick = json.onclick;
+            }
+            if( json.src ){
+                u.src = json.src;
+            }
+            if( json.height ){
+                u.height = json.height;
+            }
+            if( json.width ){
+                u.width = json.width;
+            }
+            if( json.alt ){
+                u.alt = json.alt;
+            }
+            return u;
         } else {
-            document.body.appendChild( u );
+            return {'type':'error','msg':'Missing Name'};
         }
-        return u;
     } else {
-        return {'status':'error','msg':'Missing Name'};
+        return {'type':'error','msg':'not valid json'};
     }
 }
 app.isJson = ( data )=>{
