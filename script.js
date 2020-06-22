@@ -184,10 +184,10 @@ app.createElement = ( json )=>{
         return {'type':'error','msg':'not valid json'};
     }
 }
-app.isJson = ( data )=>{
+app.isJson = ( json )=>{
 	try{
-		JSON.parse( data );
-	}catch( data ){
+		JSON.parse( json );
+	}catch( err ){
 		return false;
 	}
 	return true;
