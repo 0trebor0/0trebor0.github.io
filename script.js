@@ -156,45 +156,9 @@ app.createElement = ( json )=>{
                     app.createElement(b);
                 });
             }
-            if( json.id && json.id !== '' ){
-                //Add Id To element
-                u.id = json.id;
-            }
-            if( json.type && json.type !== '' ){
-                //Add Type To element
-                u.type = json.type;
-            }
             if( json.onclick && typeof json.onclick == 'function'){
                 //Add onclick event
                 u.onclick = json.onclick;
-            }
-            if( json.src && json.src !== '' ){
-                //Add src to element
-                u.src = json.src;
-            }
-            if( json.href && json.href !== '' ){
-                //Add href to element
-                u.href = json.href;
-            }
-            if( json.height && json.height !== '' ){
-                //Add height to element
-                u.height = json.height;
-            }
-            if( json.width && json.width !== '' ){
-                //Add width to element
-                u.width = json.width;
-            }
-            if( json.alt && json.alt !== '' ){
-                //Add alt to element
-                u.alt = json.alt;
-            }
-            if( json.action && json.action !== '' ){
-                //Add action to element
-                u.action = json.action;
-            }
-            if( json.loading && json.loading !== '' ){
-                //Add loading to element
-                u.loading = json.loading;
             }
             if( json.oncreate && typeof json.oncreate == 'function' ){
                 //Run function on element create
