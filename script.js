@@ -130,8 +130,7 @@ app.createElement = ( json )=>{
     if( typeof json == 'object' ){
         if( "name" in json ){
             u = document.createElement( json.name );
-            delete json.name;
-            if( "inside" in json ){
+            if( json.inside && json.inside !=='' ){
                 if( json.inside.nodeType && json.inside.nodeType === 1 ){
                     json.inside.appendChild( u );
                 } else if( document.querySelector( json.inside ) ){
@@ -139,42 +138,67 @@ app.createElement = ( json )=>{
                 } else {
                     return {'type':'error','msg':'cant find '+json.inside};
                 }
-                delete json.inside;
             } else {
                 //Adding to Body
                 document.body.appendChild( u );
-                delete json.inside;
             }
             if( json.class && json.class.length > 0){
                 //Loop to add class
                 json.class.forEach((c)=>{
                     u.classList.add(c);
                 });
-                delete json.class;
             }
             if( json.body && typeof json.body == 'string' ){
                 u.innerHTML = json.body;
-                delete json.body;
             } else if( json.body && typeof json.body == 'object' && json.body.length > 0 ){
                 json.body.forEach((b)=>{
                     b.inside = u;
                     app.createElement(b);
                 });
-                delete json.body;
             }
-            let toRun;
+            if( json.id && json.id !== '' ){
+                //Add Id To element
+                u.id = json.id;
+            }
+            if( json.type && json.type !== '' ){
+                //Add Type To element
+                u.type = json.type;
+            }
+            if( json.onclick && typeof json.onclick == 'function'){
+                //Add onclick event
+                u.onclick = json.onclick;
+            }
+            if( json.src && json.src !== '' ){
+                //Add src to element
+                u.src = json.src;
+            }
+            if( json.href && json.href !== '' ){
+                //Add href to element
+                u.href = json.href;
+            }
+            if( json.height && json.height !== '' ){
+                //Add height to element
+                u.height = json.height;
+            }
+            if( json.width && json.width !== '' ){
+                //Add width to element
+                u.width = json.width;
+            }
+            if( json.alt && json.alt !== '' ){
+                //Add alt to element
+                u.alt = json.alt;
+            }
+            if( json.action && json.action !== '' ){
+                //Add action to element
+                u.action = json.action;
+            }
+            if( json.loading && json.loading !== '' ){
+                //Add loading to element
+                u.loading = json.loading;
+            }
             if( json.oncreate && typeof json.oncreate == 'function' ){
                 //Run function on element create
-                toRun = json.oncreate;
-            }
-            delete json.oncreate;
-            for(yo in json){
-                if( typeof json[yo] !== 'function' ){
-                    u[yo] = json[yo];
-                }
-            }
-            if( typeof toRun == 'function' ){
-                toRun(u);
+                json.oncreate(u);
             }
             return u;
         } else {
