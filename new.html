@@ -1,0 +1,307 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0trebor0</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <script src="./0trebor0.github.io/script.js"></script>
+</head>
+<body>
+    <script>
+        app.navbaritems = [
+            {
+                "name":"a",
+                "id":"#home",
+                "class":[
+                    "navbar-item"
+                ],
+                "body":"Home",
+                oncreate:function(e){
+                    e.href = "#home";
+                    e.onclick = ()=>{
+                        navClick(e);
+                    }
+                }
+            },
+            {
+                "name":"a",
+                "id":"#projects",
+                "class":[
+                    "navbar-item"
+                ],
+                "body":"Projects",
+                oncreate:function(e){
+                    e.href = "#projects";
+                    e.onclick = ()=>{
+                        navClick(e);
+                    }
+                }
+            }
+        ];
+        navClick = (e)=>{
+            let id;
+            if( e.href ){
+                id = e.href.split('#').pop();
+                id = '#'+id;
+            } else {
+                id = '#'+e;
+            }
+            app.navbaritems.forEach((d)=>{
+                document.querySelector(d.id).style.display = 'none';
+            });
+            if( document.querySelector(id) && document.querySelector(id).style.display == 'none' ){
+                document.querySelector(id).style.display = "";
+            }
+        }
+        let pages = [
+            {
+                "name":"section",
+                "class":[
+                    "hero",
+                    "is-light"
+                ],
+                "body":[
+                    {
+                        "name":"div",
+                        "class":[
+                            "hero-head"
+                        ],
+                        "body":[
+                            {
+                                "name":"nav",
+                                "class":[
+                                    "navbar"
+                                ],
+                                "body":[
+                                    {
+                                        "name":"div",
+                                        "class":[
+                                            "container"
+                                        ],
+                                        "body":[
+                                            {
+                                                "name":"div",
+                                                "class":[
+                                                    "navbar-brand"
+                                                ],
+                                                "body":[
+                                                    {
+                                                        "name":"a",
+                                                        "class":[
+                                                            "navbar-item"
+                                                        ],
+                                                        "body":[
+                                                            {
+                                                                "name":"h1",
+                                                                "body":"Portfolio",
+                                                                "class":[
+                                                                    "title"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "name":"span",
+                                                        "class":[
+                                                            "navbar-burger","burger"
+                                                        ],
+                                                        "body":[
+                                                            {
+                                                                "name":"span"
+                                                            },
+                                                            {
+                                                                "name":"span"
+                                                            },
+                                                            {
+                                                                "name":"span"
+                                                            }
+                                                        ],
+                                                        oncreate:function(e){
+                                                            e.onclick = ()=>{
+                                                                if( e.classList.contains('is-active') ){
+                                                                    e.classList.remove('is-active');
+                                                                } else {
+                                                                    e.classList.add('is-active');
+                                                                }
+                                                                if(document.querySelector('.navbar-menu').classList.contains('is-active')){
+                                                                    document.querySelector('.navbar-menu').classList.remove('is-active')
+                                                                } else {
+                                                                    document.querySelector('.navbar-menu').classList.add('is-active')
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "name":"div",
+                                                "class":[
+                                                    "navbar-menu"
+                                                ],
+                                                "body":[
+                                                    {
+                                                        "name":"div",
+                                                        "class":[
+                                                            "navbar-end","has-text-centered"
+                                                        ],
+                                                        oncreate:(e)=>{
+                                                            app.navbaritems.forEach((o)=>{
+                                                                o.inside = e;
+                                                                app.createElement(o);
+                                                            });
+                                                        }
+                                                    }
+                                                ],
+                                                oncreate:function(e){
+                                                    e.onclick = ()=>{
+                                                        if( e.classList.contains('is-active') ){
+                                                            e.classList.remove('is-active');
+                                                        } else {
+                                                            e.classList.add('is-active');
+                                                        }
+                                                        if(document.querySelector('.navbar-burger').classList.contains('is-active')){
+                                                            document.querySelector('.navbar-burger').classList.remove('is-active')
+                                                        } else {
+                                                            document.querySelector('.navbar-burger').classList.add('is-active')
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name":"section",
+                "class":[
+                    "hero"
+                ],
+                oncreate:function(e){
+                    e.id = "projects";
+                    e.style.display = "none";
+                },
+                "body":[
+                    {
+                        "name":"div",
+                        "class":[
+                            "hero-body"
+                        ],
+                        "body":[
+                            {
+                                "name":"div",
+                                "class":[
+                                    "container","has-text-centered"
+                                ],
+                                "body":[
+                                    {
+                                        "name":"h1",
+                                        "class":[
+                                            "title"
+                                        ],
+                                        "body":"Projects"
+                                    },
+                                    {
+                                        "name":"div",
+                                        "class":[
+                                            "box","has-text-centered"
+                                        ],
+                                        "body":[
+                                        ],
+                                        oncreate:(element)=>{
+                                            app.github('0trebor0').repos.then((json)=>{
+                                                if( json.length > 0 ){
+                                                    json.forEach( repo=>{
+                                                        //console.log(repo);
+                                                        if( repo.fork == false ){
+                                                            app.createElement({
+                                                                "name":"h2",
+                                                                "class":[
+                                                                    "subtitle"
+                                                                ],
+                                                                "body":[
+                                                                    repo.name+' - '+repo.language,
+                                                                    {
+                                                                        "name":"a",
+                                                                        "body":" [View Git]",
+                                                                        oncreate:(e)=>{
+                                                                            e.href = repo.html_url;
+                                                                        }
+                                                                    }
+                                                                ],
+                                                                "inside":element
+                                                            });
+                                                        }
+                                                    } );
+                                                }
+                                            });
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name":"section",
+                "class":[
+                    "hero"
+                ],
+                oncreate:function(e){
+                    e.id = "home";
+                    e.style.display = "none";
+                },
+                "body":[
+                    {
+                        "name":"div",
+                        "class":[
+                            "hero-body"
+                        ],
+                        "body":[
+                            {
+                                "name":"div",
+                                "class":[
+                                    "container","has-text-centered"
+                                ],
+                                "body":[
+                                    {
+                                        "name":"h1",
+                                        "class":[
+                                            "title"
+                                        ],
+                                        "body":"Home"
+                                    },
+                                    {
+                                        "name":"div",
+                                        "class":[
+                                            "box"
+                                        ],
+                                        "body":[
+                                            {
+                                                "name":"h1",
+                                                "body":"TESTING"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+        app.windowOnload.push(()=>{
+            pages.forEach(page=>{
+                app.createElement(page);
+            });
+            if( app.urlHash !=='' ){
+                navClick( app.urlHash );
+            }
+        });
+    </script>
+</body>
+</html>

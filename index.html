@@ -1,307 +1,114 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>0trebor0</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
-    <script src="./0trebor0.github.io/script.js"></script>
-</head>
-<body>
-    <script>
-        app.navbaritems = [
-            {
-                "name":"a",
-                "id":"#home",
-                "class":[
-                    "navbar-item"
-                ],
-                "body":"Home",
-                oncreate:function(e){
-                    e.href = "#home";
-                    e.onclick = ()=>{
-                        navClick(e);
-                    }
-                }
-            },
-            {
-                "name":"a",
-                "id":"#projects",
-                "class":[
-                    "navbar-item"
-                ],
-                "body":"Projects",
-                oncreate:function(e){
-                    e.href = "#projects";
-                    e.onclick = ()=>{
-                        navClick(e);
-                    }
-                }
-            }
-        ];
-        navClick = (e)=>{
-            let id;
-            if( e.href ){
-                id = e.href.split('#').pop();
-                id = '#'+id;
-            } else {
-                id = '#'+e;
-            }
-            app.navbaritems.forEach((d)=>{
-                document.querySelector(d.id).style.display = 'none';
-            });
-            if( document.querySelector(id) && document.querySelector(id).style.display == 'none' ){
-                document.querySelector(id).style.display = "";
-            }
-        }
-        let pages = [
-            {
-                "name":"section",
-                "class":[
-                    "hero",
-                    "is-light"
-                ],
-                "body":[
-                    {
-                        "name":"div",
-                        "class":[
-                            "hero-head"
-                        ],
-                        "body":[
-                            {
-                                "name":"nav",
-                                "class":[
-                                    "navbar"
-                                ],
-                                "body":[
-                                    {
-                                        "name":"div",
-                                        "class":[
-                                            "container"
-                                        ],
-                                        "body":[
-                                            {
-                                                "name":"div",
-                                                "class":[
-                                                    "navbar-brand"
-                                                ],
-                                                "body":[
-                                                    {
-                                                        "name":"a",
-                                                        "class":[
-                                                            "navbar-item"
-                                                        ],
-                                                        "body":[
-                                                            {
-                                                                "name":"h1",
-                                                                "body":"Portfolio",
-                                                                "class":[
-                                                                    "title"
-                                                                ]
-                                                            }
-                                                        ]
-                                                    },
-                                                    {
-                                                        "name":"span",
-                                                        "class":[
-                                                            "navbar-burger","burger"
-                                                        ],
-                                                        "body":[
-                                                            {
-                                                                "name":"span"
-                                                            },
-                                                            {
-                                                                "name":"span"
-                                                            },
-                                                            {
-                                                                "name":"span"
-                                                            }
-                                                        ],
-                                                        oncreate:function(e){
-                                                            e.onclick = ()=>{
-                                                                if( e.classList.contains('is-active') ){
-                                                                    e.classList.remove('is-active');
-                                                                } else {
-                                                                    e.classList.add('is-active');
-                                                                }
-                                                                if(document.querySelector('.navbar-menu').classList.contains('is-active')){
-                                                                    document.querySelector('.navbar-menu').classList.remove('is-active')
-                                                                } else {
-                                                                    document.querySelector('.navbar-menu').classList.add('is-active')
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "name":"div",
-                                                "class":[
-                                                    "navbar-menu"
-                                                ],
-                                                "body":[
-                                                    {
-                                                        "name":"div",
-                                                        "class":[
-                                                            "navbar-end","has-text-centered"
-                                                        ],
-                                                        oncreate:(e)=>{
-                                                            app.navbaritems.forEach((o)=>{
-                                                                o.inside = e;
-                                                                app.createElement(o);
-                                                            });
-                                                        }
-                                                    }
-                                                ],
-                                                oncreate:function(e){
-                                                    e.onclick = ()=>{
-                                                        if( e.classList.contains('is-active') ){
-                                                            e.classList.remove('is-active');
-                                                        } else {
-                                                            e.classList.add('is-active');
-                                                        }
-                                                        if(document.querySelector('.navbar-burger').classList.contains('is-active')){
-                                                            document.querySelector('.navbar-burger').classList.remove('is-active')
-                                                        } else {
-                                                            document.querySelector('.navbar-burger').classList.add('is-active')
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "name":"section",
-                "class":[
-                    "hero"
-                ],
-                oncreate:function(e){
-                    e.id = "projects";
-                    e.style.display = "none";
-                },
-                "body":[
-                    {
-                        "name":"div",
-                        "class":[
-                            "hero-body"
-                        ],
-                        "body":[
-                            {
-                                "name":"div",
-                                "class":[
-                                    "container","has-text-centered"
-                                ],
-                                "body":[
-                                    {
-                                        "name":"h1",
-                                        "class":[
-                                            "title"
-                                        ],
-                                        "body":"Projects"
-                                    },
-                                    {
-                                        "name":"div",
-                                        "class":[
-                                            "box","has-text-centered"
-                                        ],
-                                        "body":[
-                                        ],
-                                        oncreate:(element)=>{
-                                            app.github('0trebor0').repos.then((json)=>{
-                                                if( json.length > 0 ){
-                                                    json.forEach( repo=>{
-                                                        //console.log(repo);
-                                                        if( repo.fork == false ){
-                                                            app.createElement({
-                                                                "name":"h2",
-                                                                "class":[
-                                                                    "subtitle"
-                                                                ],
-                                                                "body":[
-                                                                    repo.name+' - '+repo.language,
-                                                                    {
-                                                                        "name":"a",
-                                                                        "body":" [View Git]",
-                                                                        oncreate:(e)=>{
-                                                                            e.href = repo.html_url;
-                                                                        }
-                                                                    }
-                                                                ],
-                                                                "inside":element
-                                                            });
-                                                        }
-                                                    } );
-                                                }
-                                            });
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "name":"section",
-                "class":[
-                    "hero"
-                ],
-                oncreate:function(e){
-                    e.id = "home";
-                    e.style.display = "none";
-                },
-                "body":[
-                    {
-                        "name":"div",
-                        "class":[
-                            "hero-body"
-                        ],
-                        "body":[
-                            {
-                                "name":"div",
-                                "class":[
-                                    "container","has-text-centered"
-                                ],
-                                "body":[
-                                    {
-                                        "name":"h1",
-                                        "class":[
-                                            "title"
-                                        ],
-                                        "body":"Home"
-                                    },
-                                    {
-                                        "name":"div",
-                                        "class":[
-                                            "box"
-                                        ],
-                                        "body":[
-                                            {
-                                                "name":"h1",
-                                                "body":"TESTING"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ];
-        app.windowOnload.push(()=>{
-            pages.forEach(page=>{
-                app.createElement(page);
-            });
-            if( app.urlHash !=='' ){
-                navClick( app.urlHash );
-            }
-        });
-    </script>
-</body>
+<html>
+    <head>
+        <title>0trebor0 Projects</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" type="image/png" href="https://avatars1.githubusercontent.com/u/9081310?s=460&v=4"/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.css">
+		<script src="./script.js"></script>
+        <style>
+            @import url('https://fonts.googleapis.com/css?family=Slabo+27px|Staatliches');
+        </style>
+    </head>
+    <body>
+		<script>
+			var github = "https://api.github.com";
+			var navItems = [{"text":"Projects","href":"#projects"},{"text":"More-Info","href":"#more-info"}];
+			document.body.onload = ()=>{
+				console.log( "Welcome User" );
+				navItems.forEach( ( item )=>{
+					//console.log( item.href.slice(1) );
+					document.getElementById('tabsNavItems').innerHTML += "<li><a href='"+item.href+"' onclick='navItem(this.innerText.toLowerCase())'>"+item.text+"</a></li>";
+				} );
+				if( location.hash.slice(1) ){
+					navItem( location.hash.slice(1) );
+				}
+				getRepos();
+			}
+			function navItem( id ){
+				navItems.forEach( ( item )=>{
+					if( document.getElementById( item.text.toLowerCase() ) ){
+						document.getElementById( item.text.toLowerCase() ).style.display = 'none'
+					}
+				});
+				if( document.getElementById( id ) ){
+					if( document.getElementById( id ).style.display == 'none' ){
+						document.getElementById( id ).style.display = "";
+						document.getElementById( id ).scrollIntoView();
+					} else {
+						document.getElementById( id ).style.display = "none";
+					}
+				} else {
+					console.log( "not found "+id );
+				}
+			}
+			function getDateTime( value ){
+				d = new Date( value );
+				month = d.getMonth()+1;
+				day = d.getDate();
+				year = d.getFullYear();
+				//console.log( day+'/'+month+'/'+year );
+				return day+'/'+month+'/'+year; 
+			}
+			async function getRepos(){
+				var data = await fetch( github+"/users/0trebor0/repos" );
+				data = await data.json();
+				data.forEach( ( project )=>{
+					if( project.name.search('github.io') == -1 ){
+						if( project.fork !== true ){
+							description = "";
+							created = getDateTime( project.created_at );
+							updated = getDateTime( project.updated_at );
+							if( project.description !== null ){
+								description = project.description;
+							}
+							//console.log( project.name+" created:"+created+" updated:"+updated  );
+							document.getElementById('projectsList').innerHTML += "<div class='box'><h1><u>"+project.name+"</u></h1><p>Language: "+project.language+" - Created: "+created+" - Last Updated: "+updated+"</p><p>"+description+"</p><a class='button' href='"+project.html_url+"'>GitHub</a></div>";
+						}
+					}
+				} );
+			}
+		</script>
+		<section class="hero is-dark">
+			<div class="hero-body">
+				<div class="container has-text-centered">
+					<h1 class="title">0trebor0 Portfolio</h1>
+					<figure class="image container is-128x128">
+						<img class="is-rounded" src="https://avatars1.githubusercontent.com/u/9081310?s=460&v=4">
+					</figure>
+					<h2 class="subtitle">I'm a tech lover, enjoy php, nodejs, css, html and javascript.</br> Currently learning android development, Java.</h2>
+					<p>Contact me on:</p>
+					<p><a href="https://www.facebook.com/0trebor0" target="_blank" style='color:white;'>Facebook</a> | <a href="https://discord.gg/hVAJscM" target="_blank" style='color:white;'>Discord</a> | <a href="https://www.instagram.com/0trebor00/" target="_blank" style='color:white;'>Instagram</a></p>
+				</div>
+			</div>
+			<div class="hero-foot">
+				<nav class="tabs is-boxed is-fullwidth">
+					<div class="container">
+						<ul id="tabsNavItems"></ul>
+					</div>
+				</nav>
+			</div>
+		</section>
+		<section class="hero" id="projects">
+			<div class="hero-body">
+				<div class="container has-text-centered"id="projectsList">
+					<p class="title">My Projects</p>
+				</div>
+			</div>
+		</section>
+		<section class="hero" id="more-info" style="display:none;">
+				<div class="hero-body">
+					<div class="container has-text-centered">
+						<p class="title">Whos is 0trebor0?</p>
+						<p>I have coded on php for 3 years, I'm always learning and improving my skills.</p>
+						<p>I started learning nodejs one year ago after using javascript on web browsers, I found it interesting and easy to learn as there is loads of tutorials online. i still get things wrong but thats alright because the errors helps me to improve.</p>
+					</div>
+				</div>
+			</section>
+		<footer class="footer">
+			<div class="content has-text-centered">
+				<p>Theme <a href='https://bulma.io'>Bulma.io</a></p>
+			</div>
+		</footer>
+    </body>
 </html>
