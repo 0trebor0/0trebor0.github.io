@@ -149,11 +149,15 @@ app.createElement = ( json )=>{
                 });
             }
             if( json.body && typeof json.body == 'string' ){
-                u.innerHTML = json.body;
+                u.innerHTML += json.body;
             } else if( json.body && typeof json.body == 'object' && json.body.length > 0 ){
                 json.body.forEach((b)=>{
-                    b.inside = u;
-                    app.createElement(b);
+                    if( typeof b == 'object' ){
+                        b.inside = u;
+                        app.createElement(b);
+                    } else if( typeof b == 'string' ){
+                        u.innerHTML += b;
+                    }
                 });
             }
             if( json.onclick && typeof json.onclick == 'function'){
