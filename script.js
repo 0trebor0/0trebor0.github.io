@@ -51,6 +51,7 @@ var d = (d)=>{
     }
     methods.video = ( json )=>{
         let player;
+        let playerStorage;
         if( typeof json == "object" ){
             if(json.id && d.querySelector(json.id)){
                 player = d.querySelector(json.id);
@@ -60,6 +61,11 @@ var d = (d)=>{
                 player = {'type':'error','msg':'cant find valid video'};
             }
             if( player.nodeType && player.nodeType === 1){
+                if( window.localStorage.getItem('history') == null ){
+                    playerStorage = {};
+                } else {
+                    playerStorage = JSON.parse( window.localStorage.getItem('history') );
+                }
                 if ('mediaSession' in navigator) {
                     navigator.mediaSession.metadata = new MediaMetadata(json);
                     navigator.mediaSession.setActionHandler('play',()=>{
@@ -83,6 +89,22 @@ var d = (d)=>{
                 }
                 if( "stream" in json && json.stream == true ){
                     player.stream = player.captureStream();
+                }
+                if( playerStorage[ btoa(player.src) ] ){
+                    if( playerStorage[ btoa(player.src) ].currentTime ){
+                        player.currentTime = playerStorage[ btoa(player.src) ].currentTime;
+                    }
+                } else {
+                    playerStorage[ btoa(player.src) ] = {};
+                }
+                player.ontimeupdate = ()=>{
+                    playerStorage[ btoa(player.src) ].currentTime = player.currentTime;
+                }
+                player.onpause = ()=>{
+                    window.localStorage.setItem('history',JSON.stringify(playerStorage));
+                }
+                player.onended = ()=>{
+                    window.localStorage.setItem('history',JSON.stringify(playerStorage));
                 }
             }
         } else {
@@ -92,6 +114,7 @@ var d = (d)=>{
     }
     methods.audio = (json = null)=>{
         let player;
+        let playerStorage;
         if( typeof json == "object" ){
             if(json.id && d.querySelector(json.id)){
                 player = d.querySelector(json.id);
@@ -101,6 +124,11 @@ var d = (d)=>{
                 player = {'type':'error','msg':'cant find valid audio'};
             }
             if( player.nodeType && player.nodeType === 1){
+                if( window.localStorage.getItem('history') == null ){
+                    playerStorage = {};
+                } else {
+                    playerStorage = JSON.parse( window.localStorage.getItem('history') );
+                }
                 if ('mediaSession' in navigator) {
                     navigator.mediaSession.metadata = new MediaMetadata(json);
                     navigator.mediaSession.setActionHandler('play',()=>{
@@ -124,6 +152,22 @@ var d = (d)=>{
                 }
                 if( "stream" in json && json.stream == true ){
                     player.stream = player.captureStream();
+                }
+                if( playerStorage[ btoa(player.src) ] ){
+                    if( playerStorage[ btoa(player.src) ].currentTime ){
+                        player.currentTime = playerStorage[ btoa(player.src) ].currentTime;
+                    }
+                } else {
+                    playerStorage[ btoa(player.src) ] = {};
+                }
+                player.ontimeupdate = ()=>{
+                    playerStorage[ btoa(player.src) ].currentTime = player.currentTime;
+                }
+                player.onpause = ()=>{
+                    window.localStorage.setItem('history',JSON.stringify(playerStorage));
+                }
+                player.onended = ()=>{
+                    window.localStorage.setItem('history',JSON.stringify(playerStorage));
                 }
             }
         } else {
