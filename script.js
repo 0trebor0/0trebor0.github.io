@@ -1,19 +1,33 @@
-var app = {}
-app.onready = ( f )=>{
+var app = {windowOnload:[],windowOnresize:[],windowOnclose:[]};
+window.onload = (e)=>{
     app.urlHash = location.hash.slice(1);
-    window.onload = ()=>{
-        f();
-    };
+    document.querySelectorAll( 'input[type=text], input[type=password]' ).forEach( ( input )=>{
+        if( input !== null ){
+            input.autocomplete = "off";
+        }
+    } );
+    app.windowOnload.forEach( ( d )=>{
+        d(e);
+    } );
+};
+window.onbeforeunload = (e)=>{
+    app.windowOnclose.forEach( (d)=>{
+        d(e);
+    } );
+};
+window.onresize = (e)=>{
+    app.windowOnresize.forEach( (d)=>{
+        d(e);
+    } );
+};
+app.onready = ( f )=>{
+    app.windowOnload.push( f );
 }
 app.onclose = ( f )=>{
-    window.onbeforeunload = ()=>{
-        f();
-    };
+    app.windowOnclose.push( f );
 }
 app.onresize = ( f )=>{
-    window.onresize = ()=>{
-        f();
-    };
+    app.windowOnresize.push( f );
 }
 app.search = (id)=>{
     if( document.querySelectorAll( id ).length > 1 ){
