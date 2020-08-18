@@ -30,10 +30,10 @@ app.onresize = ( f )=>{
     app.windowOnresize.push( f );
 }
 app.search = (id)=>{
-    if( document.querySelectorAll( id ).length > 1 ){
+    if( document.querySelectorAll( id ).length > 0 ){
         return document.querySelectorAll( id );
     } else {
-        return document.querySelector( id );
+        return null;
     }
 }
 app.isJson = ( json )=>{
