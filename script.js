@@ -33,7 +33,7 @@ app.search = (id)=>{
     if( document.querySelectorAll( id ).length > 0 ){
         return document.querySelectorAll( id );
     } else {
-        return null;
+        return false;
     }
 }
 app.isJson = ( json )=>{
