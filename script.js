@@ -29,6 +29,20 @@ app.onclose = ( f )=>{
 app.onresize = ( f )=>{
     app.windowOnresize.push( f );
 }
+// app.forms = ( id )=>{
+//     console.log( id );
+//     var form = document.forms[id];
+//     if( form ){
+//         if( form.childNodes.length > 0 ){
+//             form.childNodes.forEach((d)=>{
+//                 console.log(d);
+//                 console.log(d.type);
+//             });
+//         }
+//         console.log( id );
+//     }
+//     return form;
+// }
 app.search = (id)=>{
     if( document.querySelectorAll( id ).length > 0 ){
         return document.querySelectorAll( id );
