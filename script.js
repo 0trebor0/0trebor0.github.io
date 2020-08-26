@@ -202,7 +202,7 @@ export var create = (json)=>{
                 document.body.appendChild( u );
             }
             if( json.attribute && typeof json.attribute == 'object' ){
-                for( a in json.attribute ){
+                for( var a in json.attribute ){
                     u[a] = json.attribute[a];
                 }
             }
