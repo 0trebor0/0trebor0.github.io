@@ -1,56 +1,39 @@
-var app = {windowOnload:[],windowOnresize:[],windowOnclose:[]};
+export var windowOnload = [];
+export var windowOnresize = []; 
+export var windowOnclose = [];
 window.onload = (e)=>{
-    app.urlHash = location.hash.slice(1);
     document.querySelectorAll( 'input[type=text], input[type=password]' ).forEach( ( input )=>{
         if( input !== null ){
             input.autocomplete = "off";
         }
     } );
-    app.windowOnload.forEach( ( d )=>{
+    windowOnload.forEach( ( d )=>{
         d(e);
     } );
 };
 window.onbeforeunload = (e)=>{
-    app.windowOnclose.forEach( (d)=>{
+    windowOnclose.forEach( (d)=>{
         d(e);
     } );
 };
 window.onresize = (e)=>{
-    app.windowOnresize.forEach( (d)=>{
+    windowOnresize.forEach( (d)=>{
         d(e);
     } );
 };
-app.onready = ( f )=>{
-    app.windowOnload.push( f );
+export var onready = ( f )=>{
+    windowOnload.push( f );
 }
-app.onclose = ( f )=>{
-    app.windowOnclose.push( f );
+export var onclose = ( f )=>{
+    windowOnclose.push( f );
 }
-app.onresize = ( f )=>{
-    app.windowOnresize.push( f );
+export var onresize = ( f )=>{
+    windowOnresize.push( f );
 }
-// app.forms = ( id )=>{
-//     console.log( id );
-//     var form = document.forms[id];
-//     if( form ){
-//         if( form.childNodes.length > 0 ){
-//             form.childNodes.forEach((d)=>{
-//                 console.log(d);
-//                 console.log(d.type);
-//             });
-//         }
-//         console.log( id );
-//     }
-//     return form;
-// }
-app.search = (id)=>{
-    if( document.querySelectorAll( id ).length > 0 ){
-        return document.querySelectorAll( id );
-    } else {
-        return false;
-    }
+export var search = (id)=>{
+    return document.querySelectorAll( id );
 }
-app.isJson = ( json )=>{
+export var isJson = ( json )=>{
     try{
         JSON.parse( json );
     }catch( err ){
@@ -58,7 +41,7 @@ app.isJson = ( json )=>{
     }
     return true;
 }
-app.github = ( username = null )=>{
+export var github = ( username = null )=>{
     let h = {"api":"https://api.github.com"};
     if( username == null ){
         return {'type':'error','msg':'Missing Username'};
@@ -76,7 +59,7 @@ app.github = ( username = null )=>{
     }
     return h;
 }
-app.video = ( json )=>{
+export var video = ( json )=>{
     let player;
     let playerStorage;
     if( typeof json == "object" ){
@@ -139,7 +122,7 @@ app.video = ( json )=>{
     }
     return player;
 }
-app.audio = (json = null)=>{
+export var audio = (json = null)=>{
     let player;
     let playerStorage;
     if( typeof json == "object" ){
@@ -202,7 +185,7 @@ app.audio = (json = null)=>{
     }
     return player;
 }
-app.create = (json)=>{
+export var create = (json)=>{
     let u;
     if( typeof json == 'object' ){
         if( "name" in json ){
@@ -243,7 +226,7 @@ app.create = (json)=>{
                 json.body.forEach((b)=>{
                     if( typeof b == 'object' ){
                         b.parent = u;
-                        app.create(b);
+                        create(b);
                     } else if( typeof b == 'string' ){
                         u.innerHTML += b;
                     }
