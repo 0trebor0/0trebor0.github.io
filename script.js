@@ -1,35 +1,4 @@
-export var windowOnload = [];
-export var windowOnresize = []; 
-export var windowOnclose = [];
-window.onload = (e)=>{
-    document.querySelectorAll( 'input[type=text], input[type=password]' ).forEach( ( input )=>{
-        if( input !== null ){
-            input.autocomplete = "off";
-        }
-    } );
-    windowOnload.forEach( ( d )=>{
-        d(e);
-    } );
-};
-window.onbeforeunload = (e)=>{
-    windowOnclose.forEach( (d)=>{
-        d(e);
-    } );
-};
-window.onresize = (e)=>{
-    windowOnresize.forEach( (d)=>{
-        d(e);
-    } );
-};
-export var onready = ( f )=>{
-    windowOnload.push( f );
-}
-export var onclose = ( f )=>{
-    windowOnclose.push( f );
-}
-export var onresize = ( f )=>{
-    windowOnresize.push( f );
-}
+
 export var search = (id)=>{
     return document.querySelectorAll( id );
 }
